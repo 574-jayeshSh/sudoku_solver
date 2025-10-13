@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Controls = () => {
+const Controls = ({ handleCheck, handleReset, handleNewPuzzle }) => {
   return (
-    <div className='flex flex-row justify-between gap-8 items-center'>
-        <button className='border p-2 rounded'>Check</button>
-        <button className='border p-2 rounded hover'>Reset</button>
-        <button className='border p-2 rounded'>New Puzzle</button>
+    <div className='mt-2.5'>
+        <button onClick={handleCheck} className=' p-2 mr-2 bg-black rounded-lg '>Check</button>
+        <button onClick={handleReset} className=' p-2 mr-2 bg-black rounded-lg '>Reset</button>
+        <button onClick={handleNewPuzzle} className=' p-2 mr-2 bg-black rounded-lg '>New Puzzle</button>
     </div>
   )
 }

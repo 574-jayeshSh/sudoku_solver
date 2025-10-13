@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 
-const Grid = ({ board, puzzle, selected, setSelected, handleInput }) => {
+const Grid = ({ board, puzzle, selected, setSelected, handleInput, greenCount }) => {
  
   return (
     <div className="p-[16px] bg-white border-2 rounded-lg">
@@ -28,13 +28,15 @@ const Grid = ({ board, puzzle, selected, setSelected, handleInput }) => {
                   const isCol = selected && cIdx === selected[1];
                   const isBox = selected && Math.floor(rIdx / 3) === Math.floor(selected[0] / 3) &&
                     Math.floor(cIdx / 3) === Math.floor(selected[1] / 3);
-
+                  const cellIndex = rIdx * 9 + cIdx;
+                  const isGreen = cellIndex < greenCount;
                   return (
                     <td
                       key={cIdx}
                       className={clsx(
                       "border-[1px] border-zinc-400 w-10 h-10 text-center transition-colors",
-                      (isRow || isCol || isBox) && "bg-blue-100"
+                      (isRow || isCol || isBox) && "bg-blue-100",
+                      isGreen && "bg-green-200",
                     )}
                       
                     >
