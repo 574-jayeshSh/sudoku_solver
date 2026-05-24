@@ -25,6 +25,7 @@ const App = () => {
     }
   };
 
+
   const [solution, setSolution] = useState(
     Array(9)
       .fill()
@@ -65,13 +66,44 @@ const App = () => {
     setGreenCount(0);
   };
 
+  const handleSolve = async () => {
+    try {
+      setStatus("Solving...");
+      // Convert null to 0 for backend
+      const gridForBackend = board.map(row => row.map(cell => cell === null ? 0 : cell));
+      
+      const response = await fetch("http://localhost:3000/solve",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ grid: gridForBackend })
+      });
+
+      const data = await response.json();
+
+      if(data.ok){
+        setSolution(data.solution);
+        setBoard(data.solution);
+        setStatus("Puzzle Solved !");
+      }
+      else{
+        setStatus(data.error || "Failed to solve the puzzle");
+      }
+    }
+    catch(err){
+      console.error(err);
+      setStatus("Error connecting to the server");
+    }
+  }
+
   const [selected, setSelected] = useState(null);
   return (
     <div className="flex flex-col justify-center items-center max-h-full max-w-full m-3 gap-y-6">
       <div className="flex flex-col justify-center items-center max-h-full max-w-full m-3 gap-y-6">
         {status && (
           <div className="relative">
-            <div className=" top-0  p-2.5 -translate-3 bg-black border-10-black rounded">
+            <div className=" top-0  p-2.5 -translate-3 bg-black text-white border-10-black rounded">
               {status}
             </div>
           </div>
@@ -89,6 +121,7 @@ const App = () => {
           handleCheck={handleCheck}
           handleReset={handleReset}
           handleNewPuzzle={handleNewPuzzle}
+          handleSolve={handleSolve}
         />
       </div>
     </div>
